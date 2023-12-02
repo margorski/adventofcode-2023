@@ -5,7 +5,28 @@ digit_strings = {
     'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5', 'six': '6', 'seven': '7', 'eight': '8', 'nine': '9'
 }
 
-
+class TestGetCalibrationValue(unittest.TestCase):
+    def test_function(self):
+        test_data = [['two1nine', 29],
+                    ['eightwothree', 83],
+                    ['abcone2threexyz', 13],
+                    ['xtwone3four', 24],
+                    ['4nineeightseven2',42],
+                    ['zoneight234', 14],
+                    ['7pqrstsixteen', 76],
+                    ['oneight', 18],
+                    ['threeight', 38],
+                    ['oneight', 18],
+                    ['fiveight', 58],
+                    ['nineight', 98],
+                    ['twone', 21],
+                    ['sevenine', 79],
+                    ['eightwo', 82],
+                    ['eighthree', 83]                 
+                    ]
+        for test_item in test_data:
+            self.assertEqual(get_calibration_value(test_item[0]), test_item[1])
+        
 def get_calibration_value(value: str):
     if not value:
         return 0
