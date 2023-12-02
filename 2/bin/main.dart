@@ -8,7 +8,7 @@ num getHighestAmount(String line, String color) {
   return counts.fold(0, (prev, curr) => curr > prev ? curr : prev);
 }
 
-num checkGameValidity(String line) {
+num part1AnswerForLine(String line, {debug = false}) {
   final id = int.parse(RegExp(r'Game (\d+)').firstMatch(line)?.group(1) ?? "");
   final redsAmount = getHighestAmount(line, 'red');
   final bluesAmount = getHighestAmount(line, 'blue');
@@ -17,9 +17,18 @@ num checkGameValidity(String line) {
   final isValidGame =
       redsAmount <= 12 && greensAmount <= 13 && bluesAmount <= 14;
 
-  print(
-      'Checking for $line\tid: $id red: $redsAmount green: $greensAmount blues: $bluesAmount\tvalid: $isValidGame');
+  if (debug)
+    print(
+        'Checking for $line\tid: $id red: $redsAmount green: $greensAmount blues: $bluesAmount\tvalid: $isValidGame');
   return isValidGame ? id : 0;
+}
+
+num part2AnswerForLine(String line) {
+  final redsAmount = getHighestAmount(line, 'red');
+  final bluesAmount = getHighestAmount(line, 'blue');
+  final greensAmount = getHighestAmount(line, 'green');
+
+  return redsAmount * bluesAmount * greensAmount;
 }
 
 Future<void> main(List<String> arguments) async {
@@ -41,9 +50,9 @@ Future<void> main(List<String> arguments) async {
 
   try {
     final result = await lines
-        .map((line) => checkGameValidity(line))
+        .map((line) => part2AnswerForLine(line))
         .reduce((a, b) => a + b);
-    print('Result: $result');
+    print('Result for part: $result');
   } catch (e) {
     print('Error: $e');
   }
