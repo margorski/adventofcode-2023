@@ -1,0 +1,6 @@
+name: aocd2
+environment:
+  sdk: '^3.2.0'
+
+dev_dependencies:
+  test: any
