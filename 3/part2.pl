@@ -11,4 +11,4 @@ if (!defined $ARGV[0]) {
 }
 
 my $filename = $ARGV[0];
-my $result = do_things($filename, "p1");
+my $result = do_things($filename, "p2");
