@@ -6,7 +6,7 @@ const readline = require('readline');
 
 function calculateCardPoints(card) {
     const matchingNumbers = card.numbers.filter(n => card.winningNumbers.includes(n));
-    return matchingNumbers.length == 0 ? 0 : Math.pow(2, matchingNumbers.length - 1);
+    return matchingNumbers.length;
 }
 
 function mapCard(line) {
@@ -25,19 +25,26 @@ async function solvePuzzleForFile(filename) {
       crlfDelay: Infinity
     });
     
-    const cards = [];
-    for await (const line of rl) cards.push(mapCard(line));
-    const result = cards.reduce((sum, card) => {
-        return sum += calculateCardPoints(card);
-    }, 0);
+    const originalCards = [];
+    for await (const line of rl) originalCards.push(mapCard(line));
 
-    return result;
+    const solveCard = (card) => {
+        const points = calculateCardPoints(card);
+        const startIdx = card.id;
+        const endIdx = card.id + points;
+        const copiedCards = originalCards.slice(startIdx, endIdx);
+        return [card, ...copiedCards.flatMap(solveCard)];
+    }
+
+    const allCards = originalCards.flatMap(solveCard);
+
+    return allCards.length;
 }
 
 async function verifyForTestData() {
     const assert = require('assert');
     const testdataFilename = './testdata.txt';
-    const testdataResult = 13;
+    const testdataResult = 30;
 
     assert(testdataResult === await solvePuzzleForFile(testdataFilename), 'sum for testdata is not correct');
     console.log("Solution verified with test data verified.");
